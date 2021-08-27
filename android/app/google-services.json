@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "14573291254",
+    "project_id": "blue-mobile-app-158a4",
+    "storage_bucket": "blue-mobile-app-158a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14573291254:android:bd587f162f85c73b80ced7",
+        "android_client_info": {
+          "package_name": "com.skynet.blue.blue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14573291254-7v4cp4pc1t0b9kfvaa4hjko4k2gkcmgo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMjCM4a3Om0IwRU7HXV6F7JLEiAdzxRYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14573291254-7v4cp4pc1t0b9kfvaa4hjko4k2gkcmgo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
