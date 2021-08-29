@@ -1,5 +1,10 @@
 import 'package:blue/model/homescreen_model.dart';
+import 'package:blue/model/image_model.dart';
+import 'package:blue/screens.dart/detailed_view.dart';
 import 'package:blue/services/firebase_db.dart';
+import 'package:blue/widgets/homescreen_widgets/category_card.dart';
+import 'package:blue/widgets/homescreen_widgets/story_widget.dart';
+import 'package:blue/widgets/mini_card_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +23,6 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Icon(
               Icons.ac_unit_outlined,
-              color: Colors.red,
             ),
           )
         ],
@@ -36,68 +40,97 @@ class HomePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          StoryWidget(snapshot.data.stories[0]),
-                          StoryWidget(snapshot.data.stories[1]),
-                          StoryWidget(snapshot.data.stories[0]),
-                          StoryWidget(snapshot.data.stories[1]),
-                          StoryWidget(snapshot.data.stories[0]),
-                        ],
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(
+                              snapshot.data.stories.length,
+                              (index) =>
+                                  StoryWidget(snapshot.data.stories[index])),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CarouselSlider(
-                      options: CarouselOptions(
-                          height: 200.0,
-                          pageSnapping: true,
-                          autoPlay: true,
-                          enlargeCenterPage: true),
-                      items: [1, 2, 3, 4, 5].map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: 200,
-                              child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: snapshot.data.sliderOffers[0].main),
-                              decoration: BoxDecoration(
-                                  //  borderRadius: BorderRadius.circular(10),
-                                  ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CarouselSlider(
+                        options: CarouselOptions(
+                            height: 200.0,
+                            pageSnapping: true,
+                            autoPlay: true,
+                            enlargeCenterPage: true),
+                        items: snapshot.data.sliderOffers.map((i) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailedView(i)));
+                                },
+                                child: Container(
+                                  height: 200,
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.cover, imageUrl: i.main),
+                                  decoration: BoxDecoration(
+                                      //  borderRadius: BorderRadius.circular(10),
+                                      ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        children: List.generate(
+                          snapshot.data.miniCards.length,
+                          (index) =>
+                              MiniCardWidget(snapshot.data.miniCards[index]),
+                        ),
+                      ),
+                      CategoryCard(
+                        title: 'Kids',
+                        image: snapshot.data.stories[0],
+                      ),
+                      Container(
+                        height: 500,
+                        child: GridView.builder(
+                          physics: BouncingScrollPhysics(),
+                          padding: EdgeInsets.only(
+                              left: 15.0, right: 15.0, top: 10.0),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 4.0,
+                            childAspectRatio: 3 / 3.2,
+                            mainAxisSpacing: 8.0,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (BuildContext context, int index) {
+                            return CategoryCard(
+                              image: snapshot.data.stories[1],
+                              title: 'Men',
                             );
                           },
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 150,
-                      width: 160,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: snapshot.data.stories[1].main),
+                        ),
                       ),
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            spreadRadius: 0.2,
-                            blurRadius: 10,
-                            color: Colors.black45,
-                            offset: Offset(0, 1))
-                      ], borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }
