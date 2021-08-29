@@ -1,5 +1,4 @@
 import 'package:blue/model/homescreen_model.dart';
-import 'package:blue/model/image_model.dart';
 import 'package:blue/screens.dart/detailed_view.dart';
 import 'package:blue/services/firebase_db.dart';
 import 'package:blue/widgets/homescreen_widgets/category_card.dart';
@@ -27,9 +26,9 @@ class HomePage extends StatelessWidget {
           )
         ],
         backgroundColor: Colors.white,
-        title: Text(
-          'BLUE',
-          style: TextStyle(color: Colors.pink),
+        title: Image.asset(
+          'assets/images/home_logo.png',
+          width: 180,
         ),
       ),
       body: FutureBuilder(
@@ -103,31 +102,16 @@ class HomePage extends StatelessWidget {
                               MiniCardWidget(snapshot.data.miniCards[index]),
                         ),
                       ),
-                      CategoryCard(
-                        title: 'Kids',
-                        image: snapshot.data.stories[0],
+                      SizedBox(
+                        height: 20,
                       ),
-                      Container(
-                        height: 500,
-                        child: GridView.builder(
-                          physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 10.0),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 4.0,
-                            childAspectRatio: 3 / 3.2,
-                            mainAxisSpacing: 8.0,
-                          ),
-                          itemCount: 4,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CategoryCard(
-                              image: snapshot.data.stories[1],
-                              title: 'Men',
-                            );
-                          },
-                        ),
+                      GridView.count(
+                        shrinkWrap: true,
+                        // crossAxisSpacing: 20,
+                        // mainAxisSpacing: 20,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        children: List.generate(5, (index) => CategoryCard()),
                       ),
                     ],
                   ),

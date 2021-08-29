@@ -3,7 +3,7 @@ import 'package:blue/widgets/homescreen_widgets/story_dialog.dart';
 import 'package:flutter/material.dart';
 
 class StoryWidget extends StatelessWidget {
-  final ImageModel storyImage;
+  final StoryModel storyImage;
   StoryWidget(this.storyImage);
 
   @override
@@ -31,9 +31,9 @@ class StoryWidget extends StatelessWidget {
           ),
           child: CircleAvatar(
             foregroundImage: NetworkImage(
-              storyImage.main,
+              storyImage.mainImg,
             ),
-            maxRadius: 40,
+            maxRadius: 35,
           ),
         ),
       ),

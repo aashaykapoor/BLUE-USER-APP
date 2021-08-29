@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:blue/model/image_model.dart';
 
 class StoryDialog extends StatelessWidget {
-  final ImageModel imageModel;
+  final StoryModel imageModel;
   final Function onNextTap;
   final Function onPreviousTap;
   StoryDialog(this.imageModel, {this.onNextTap, this.onPreviousTap});
@@ -17,7 +17,7 @@ class StoryDialog extends StatelessWidget {
         children: [
           Center(
             child: CachedNetworkImage(
-              imageUrl: imageModel.main,
+              imageUrl: imageModel.mainImg,
               fit: BoxFit.cover,
             ),
           ),
@@ -44,7 +44,7 @@ class StoryDialog extends StatelessWidget {
                   ),
                 ),
               )),
-          imageModel.sub != null && imageModel.sub.isNotEmpty
+          imageModel.subImg != null && imageModel.subImg.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.all(30),
                   child: Align(
