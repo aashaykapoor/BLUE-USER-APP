@@ -1,6 +1,7 @@
 import 'package:blue/model/homescreen_model.dart';
 import 'package:blue/screens.dart/detailed_view.dart';
 import 'package:blue/services/firebase_db.dart';
+import 'package:blue/services/vouchers.dart';
 import 'package:blue/widgets/homescreen_widgets/category_card.dart';
 import 'package:blue/widgets/homescreen_widgets/story_widget.dart';
 import 'package:blue/widgets/mini_card_widget.dart';
@@ -18,10 +19,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.ac_unit_outlined,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (c) => VouchersScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Icon(
+                Icons.ac_unit_outlined,
+              ),
             ),
           )
         ],
@@ -68,11 +75,13 @@ class HomePage extends StatelessWidget {
                             builder: (BuildContext context) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailedView(i)));
+                                  if (i.sub != null && i.sub.isNotEmpty) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailedView(i)));
+                                  }
                                 },
                                 child: Container(
                                   height: 200,
@@ -111,7 +120,10 @@ class HomePage extends StatelessWidget {
                         // mainAxisSpacing: 20,
                         physics: NeverScrollableScrollPhysics(),
                         crossAxisCount: 3,
-                        children: List.generate(5, (index) => CategoryCard()),
+                        children: List.generate(
+                            snapshot.data.categories.length,
+                            (index) =>
+                                CategoryCard(snapshot.data.categories[index])),
                       ),
                     ],
                   ),
