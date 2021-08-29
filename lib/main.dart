@@ -1,7 +1,14 @@
+import 'package:blue/model/image_model.dart';
+import 'package:blue/screens.dart/homepage.dart';
+import 'package:blue/services/firebase_db.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -9,84 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.ac_unit_outlined,
-              color: Colors.red,
-            ),
-          )
-        ],
-        backgroundColor: Colors.white,
-        title: Text(
-          'BLUE',
-          style: TextStyle(color: Colors.pink),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  StoryWidget(),
-                  StoryWidget(),
-                  StoryWidget(),
-                  StoryWidget(),
-                  StoryWidget(),
-                  StoryWidget(),
-                  StoryWidget(),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            CarouselSlider(
-              options: CarouselOptions(
-                  height: 200.0,
-                  pageSnapping: true,
-                  autoPlay: true,
-                  enlargeCenterPage: true),
-              items: [1, 2, 3, 4, 5].map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                          //  borderRadius: BorderRadius.circular(10),
-                          color: i % 2 == 0 ? Colors.orange : Colors.purple),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
-    );
+    return MaterialApp(title: 'Flutter Demo', home: HomePage());
   }
 }
 
 class StoryWidget extends StatelessWidget {
-  const StoryWidget({Key? key}) : super(key: key);
+  final ImageModel storyImage;
+  StoryWidget(this.storyImage);
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +39,7 @@ class StoryWidget extends StatelessWidget {
         ),
         child: CircleAvatar(
           backgroundColor: Colors.red,
+          foregroundImage: NetworkImage(storyImage.main),
           maxRadius: 40,
         ),
       ),
