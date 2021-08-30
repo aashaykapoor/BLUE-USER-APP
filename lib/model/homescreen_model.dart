@@ -5,14 +5,21 @@ class HomeScreenModel {
   List<ImageModel> sliderOffers;
   List<ImageModel> miniCards;
   List<Category> categories;
+  List<ImageModel> horizontalCards;
 
   HomeScreenModel.fromMap(Map<String, dynamic> map) {
     this.stories = [];
     this.categories = [];
+    horizontalCards = [];
 
     for (var s in map['stories']) {
       if (s['is_online']) {
         this.stories.add(StoryModel.fromMap(s));
+      }
+    }
+    for (var s in map['horizontal_card']) {
+      if (s['is_online']) {
+        this.horizontalCards.add(ImageModel.fromMap(s));
       }
     }
     for (var s in map['categories']) {

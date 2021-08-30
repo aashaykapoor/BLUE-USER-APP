@@ -33,7 +33,7 @@ class StoryWidget extends StatelessWidget {
             foregroundImage: NetworkImage(
               storyImage.mainImg,
             ),
-            maxRadius: 35,
+            maxRadius: 45,
           ),
         ),
       ),

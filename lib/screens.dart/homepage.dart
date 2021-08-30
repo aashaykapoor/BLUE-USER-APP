@@ -16,7 +16,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
           GestureDetector(
@@ -25,7 +27,7 @@ class HomePage extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (c) => VouchersScreen()));
             },
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(top: 20, right: 20),
               child: Icon(
                 Icons.ac_unit_outlined,
               ),
@@ -33,9 +35,12 @@ class HomePage extends StatelessWidget {
           )
         ],
         backgroundColor: Colors.white,
-        title: Image.asset(
-          'assets/images/home_logo.png',
-          width: 180,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/images/home_logo.png',
+            width: 230,
+          ),
         ),
       ),
       body: FutureBuilder(
@@ -66,10 +71,10 @@ class HomePage extends StatelessWidget {
                       ),
                       CarouselSlider(
                         options: CarouselOptions(
-                            height: 200.0,
-                            pageSnapping: true,
+                            initialPage: 0,
+                            enlargeCenterPage: true,
                             autoPlay: true,
-                            enlargeCenterPage: true),
+                            viewportFraction: 1.0),
                         items: snapshot.data.sliderOffers.map((i) {
                           return Builder(
                             builder: (BuildContext context) {
@@ -85,11 +90,16 @@ class HomePage extends StatelessWidget {
                                 },
                                 child: Container(
                                   height: 200,
-                                  child: CachedNetworkImage(
-                                      fit: BoxFit.cover, imageUrl: i.main),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                        fit: BoxFit.fitWidth, imageUrl: i.main),
+                                  ),
                                   decoration: BoxDecoration(
-                                      //  borderRadius: BorderRadius.circular(10),
-                                      ),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
                               );
                             },
@@ -106,10 +116,28 @@ class HomePage extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         crossAxisCount: 2,
                         children: List.generate(
-                          snapshot.data.miniCards.length,
+                          snapshot.data.miniCards.length > 4
+                              ? 4
+                              : snapshot.data.miniCards.length,
                           (index) =>
                               MiniCardWidget(snapshot.data.miniCards[index]),
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 100,
+                        width: size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: snapshot.data.sliderOffers[0].main),
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: 20,

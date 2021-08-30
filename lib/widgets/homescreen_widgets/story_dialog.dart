@@ -17,7 +17,7 @@ class StoryDialog extends StatelessWidget {
         children: [
           Center(
             child: CachedNetworkImage(
-              imageUrl: imageModel.mainImg,
+              imageUrl: imageModel.subImg,
               fit: BoxFit.cover,
             ),
           ),

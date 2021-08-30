@@ -12,6 +12,7 @@ class CategoryCard extends StatelessWidget {
         children: [
           CircleAvatar(
             maxRadius: 40,
+            foregroundImage: NetworkImage(category.mainImage),
           ),
           SizedBox(
             height: 10,
