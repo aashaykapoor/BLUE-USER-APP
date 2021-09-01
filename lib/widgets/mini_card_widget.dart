@@ -1,5 +1,5 @@
 import 'package:blue/model/image_model.dart';
-import 'package:blue/screens.dart/detailed_view.dart';
+import 'package:blue/screens/detailed_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class MiniCardWidget extends StatelessWidget {
       onTap: () {
         if (image.sub != null && image.sub.isNotEmpty) {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DetailedView(image)));
+              MaterialPageRoute(builder: (context) => DetailedView(image.sub)));
         }
       },
       child: Container(

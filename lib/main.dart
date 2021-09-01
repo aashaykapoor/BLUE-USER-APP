@@ -1,10 +1,4 @@
-import 'package:blue/model/image_model.dart';
-import 'package:blue/screens.dart/homepage.dart';
-import 'package:blue/screens.dart/detailed_view.dart';
-import 'package:blue/services/firebase_db.dart';
-import 'package:blue/widgets/homescreen_widgets/story_dialog.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:blue/screens/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

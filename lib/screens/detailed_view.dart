@@ -2,8 +2,8 @@ import 'package:blue/model/image_model.dart';
 import 'package:flutter/material.dart';
 
 class DetailedView extends StatelessWidget {
-  final ImageModel imageModel;
-  DetailedView(this.imageModel);
+  final String image;
+  DetailedView(this.image);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class DetailedView extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Image.network(
-                    imageModel.sub,
+                   image,
                     fit: BoxFit.fitWidth,
                   ),
                 ),

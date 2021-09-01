@@ -1,5 +1,5 @@
 import 'package:blue/model/homescreen_model.dart';
-import 'package:blue/screens.dart/detailed_view.dart';
+
 import 'package:blue/services/firebase_db.dart';
 import 'package:blue/services/vouchers.dart';
 import 'package:blue/widgets/homescreen_widgets/category_card.dart';
@@ -10,6 +10,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import 'detailed_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -29,7 +30,8 @@ class HomePage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 20, right: 20),
               child: Icon(
-                Icons.ac_unit_outlined,
+                Icons.folder,
+                size: 30,
               ),
             ),
           )
@@ -62,8 +64,11 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           children: List.generate(
                               snapshot.data.stories.length,
-                              (index) =>
-                                  StoryWidget(snapshot.data.stories[index])),
+                              (index) => StoryWidget(
+                                    snapshot.data.stories[index],
+                                    onNextPressed: () {},
+                                    onPrevPressed: () {},
+                                  )),
                         ),
                       ),
                       SizedBox(
@@ -85,7 +90,7 @@ class HomePage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                DetailedView(i)));
+                                                DetailedView(i.sub)));
                                   }
                                 },
                                 child: Container(
@@ -152,6 +157,21 @@ class HomePage extends StatelessWidget {
                             snapshot.data.categories.length,
                             (index) =>
                                 CategoryCard(snapshot.data.categories[index])),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        children: List.generate(
+                          snapshot.data.cardss.length,
+                          (index) =>
+                              MiniCardWidget(snapshot.data.cardss[index]),
+                        ),
                       ),
                     ],
                   ),

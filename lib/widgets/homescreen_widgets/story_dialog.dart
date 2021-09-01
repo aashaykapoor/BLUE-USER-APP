@@ -1,3 +1,4 @@
+import 'package:blue/screens/detailed_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:blue/model/image_model.dart';
@@ -15,10 +16,18 @@ class StoryDialog extends StatelessWidget {
       color: Colors.black,
       child: Stack(
         children: [
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //   child: LinearProgressIndicator(),
+          // ),
           Center(
-            child: CachedNetworkImage(
-              imageUrl: imageModel.subImg,
-              fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: imageModel.subImg,
+                  fit: BoxFit.cover,
+                ),
+              ],
             ),
           ),
           Align(
@@ -44,26 +53,47 @@ class StoryDialog extends StatelessWidget {
                   ),
                 ),
               )),
-          imageModel.subImg != null && imageModel.subImg.isNotEmpty
+          Row(
+            children: [
+              Flexible(
+                  child: GestureDetector(
+                onTap: onPreviousTap,
+                child: Container(),
+              )),
+              Flexible(
+                  child: GestureDetector(
+                onTap: onNextTap,
+                child: Container(),
+              ))
+            ],
+          ),
+          imageModel.knowMoreImg != null && imageModel.knowMoreImg.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.all(30),
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 10),
-                        child: Text(
-                          'Know More',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                DetailedView(imageModel.knowMoreImg)));
+                      },
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Text(
+                            'Know More',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blueGrey,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blueGrey,
+                        ),
                       ),
                     ),
                   ),

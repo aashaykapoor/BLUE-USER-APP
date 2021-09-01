@@ -1,10 +1,13 @@
 import 'package:blue/model/image_model.dart';
 import 'package:blue/widgets/homescreen_widgets/story_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class StoryWidget extends StatelessWidget {
   final StoryModel storyImage;
-  StoryWidget(this.storyImage);
+  final Function onNextPressed;
+  final Function onPrevPressed;
+  StoryWidget(this.storyImage, {this.onNextPressed, this.onPrevPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,11 @@ class StoryWidget extends StatelessWidget {
               builder: (context) => AlertDialog(
                     insetPadding: EdgeInsets.zero,
                     contentPadding: EdgeInsets.zero,
-                    content: StoryDialog(storyImage),
+                    content: StoryDialog(
+                      storyImage,
+                      onNextTap: onNextPressed,
+                      onPreviousTap: onPrevPressed,
+                    ),
                   ));
         },
         child: Container(
@@ -30,7 +37,7 @@ class StoryWidget extends StatelessWidget {
             ),
           ),
           child: CircleAvatar(
-            foregroundImage: NetworkImage(
+            foregroundImage: CachedNetworkImageProvider(
               storyImage.mainImg,
             ),
             maxRadius: 45,
