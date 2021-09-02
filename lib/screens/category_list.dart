@@ -12,7 +12,7 @@ class CategoryListScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           category.title,
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Colors.blue),
         ),
       ),
       body: Padding(

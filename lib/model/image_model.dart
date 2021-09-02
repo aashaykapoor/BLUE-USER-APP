@@ -20,11 +20,15 @@ class StoryModel {
   String mainImg;
   String subImg;
   String knowMoreImg;
+  String phoneNumber;
+  String location;
 
   StoryModel.fromMap(Map<String, dynamic> map) {
     this.isOnline = map['is_online'];
     this.mainImg = map['main_img'];
     this.subImg = map['sub_img'];
     this.knowMoreImg = map['know_more'];
+    this.location = map['map_link'];
+    this.phoneNumber = map['phone'];
   }
 }

@@ -33,7 +33,7 @@ class StoryWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               width: 2,
-              color: Colors.purple,
+              color: Color(0xFF2874F0),
             ),
           ),
           child: CircleAvatar(

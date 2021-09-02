@@ -16,10 +16,10 @@ class StoryDialog extends StatelessWidget {
       color: Colors.black,
       child: Stack(
         children: [
-          // Align(
-          //   alignment: Alignment.topCenter,
-          //   child: LinearProgressIndicator(),
-          // ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: LinearProgressIndicator(),
+          ),
           Center(
             child: Stack(
               children: [
@@ -75,8 +75,11 @@ class StoryDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                DetailedView(imageModel.knowMoreImg)));
+                            builder: (context) => DetailedView(
+                                  imageModel.knowMoreImg,
+                                  locationLink: imageModel.location,
+                                  phoneNumber: imageModel.phoneNumber,
+                                )));
                       },
                       child: Container(
                         child: Padding(

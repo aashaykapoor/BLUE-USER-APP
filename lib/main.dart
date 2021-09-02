@@ -1,6 +1,8 @@
+import 'package:blue/providers/storyProvider.dart';
 import 'package:blue/screens/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Blue App',
-      home: HomePage(),
+      home: ChangeNotifierProvider(
+          create: (context) => StoryProvider(), child: HomePage()),
       theme: ThemeData(
           appBarTheme: AppBarTheme(
               elevation: 0,

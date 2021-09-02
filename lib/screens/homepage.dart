@@ -1,4 +1,5 @@
 import 'package:blue/model/homescreen_model.dart';
+import 'package:blue/providers/storyProvider.dart';
 
 import 'package:blue/services/firebase_db.dart';
 import 'package:blue/services/vouchers.dart';
@@ -8,6 +9,7 @@ import 'package:blue/widgets/mini_card_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 import 'detailed_view.dart';
@@ -28,10 +30,11 @@ class HomePage extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (c) => VouchersScreen()));
             },
             child: Padding(
-              padding: const EdgeInsets.only(top: 20, right: 20),
-              child: Icon(
-                Icons.folder,
-                size: 30,
+              padding: const EdgeInsets.only(top: 20, right: 8, bottom: 5),
+              child: Image.asset(
+                'assets/images/rainbow.png',
+                height: 70,
+                width: 70,
               ),
             ),
           )
@@ -53,6 +56,10 @@ class HomePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
+              List randomStories = snapshot.data.stories;
+              randomStories.shuffle();
+              Provider.of<StoryProvider>(context, listen: false).stories =
+                  randomStories;
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -63,11 +70,15 @@ class HomePage extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: List.generate(
-                              snapshot.data.stories.length,
-                              (index) => StoryWidget(
-                                    snapshot.data.stories[index],
-                                    onNextPressed: () {},
-                                    onPrevPressed: () {},
+                              randomStories.length,
+                              (index) => Consumer<StoryProvider>(
+                                    builder: (context, provider, child) {
+                                      return StoryWidget(
+                                        randomStories[index],
+                                        onNextPressed: () {},
+                                        onPrevPressed: () {},
+                                      );
+                                    },
                                   )),
                         ),
                       ),
@@ -89,8 +100,11 @@ class HomePage extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailedView(i.sub)));
+                                            builder: (context) => DetailedView(
+                                                  i.sub,
+                                                  phoneNumber: i.phoneNumber,
+                                                  locationLink: i.mapLink,
+                                                )));
                                   }
                                 },
                                 child: Container(
@@ -102,7 +116,6 @@ class HomePage extends StatelessWidget {
                                         fit: BoxFit.fitWidth, imageUrl: i.main),
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -131,19 +144,28 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        height: 100,
-                        width: size.width,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: snapshot.data.sliderOffers[0].main),
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey),
-                      ),
+                      snapshot.data.horizontalCards.isEmpty
+                          ? Container()
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => DetailedView(
+                                        snapshot.data.horizontalCards[0].sub)));
+                              },
+                              child: Container(
+                                height: 100,
+                                width: size.width,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: snapshot
+                                          .data.horizontalCards[0].main),
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey),
+                              )),
                       SizedBox(
                         height: 20,
                       ),

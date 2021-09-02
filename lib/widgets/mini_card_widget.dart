@@ -12,8 +12,12 @@ class MiniCardWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (image.sub != null && image.sub.isNotEmpty) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DetailedView(image.sub)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetailedView(
+                    image.sub,
+                    locationLink: image.mapLink,
+                    phoneNumber: image.phoneNumber,
+                  )));
         }
       },
       child: Container(

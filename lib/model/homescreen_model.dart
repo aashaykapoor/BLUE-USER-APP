@@ -25,11 +25,14 @@ class HomeScreenModel {
       }
     }
 
-    for (var s in map['horizontal_card']) {
-      if (s['is_online']) {
-        this.horizontalCards.add(ImageModel.fromMap(s));
+    if (map['horizontal_card'] != null) {
+      for (var s in map['horizontal_card']) {
+        if (s['is_online']) {
+          this.horizontalCards.add(ImageModel.fromMap(s));
+        }
       }
     }
+
     for (var s in map['categories']) {
       if (s['is_online']) {
         this.categories.add(Category.fromMap(s));
