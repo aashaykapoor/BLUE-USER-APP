@@ -1,4 +1,5 @@
 import 'package:blue/model/image_model.dart';
+import 'package:blue/screens/story_page.dart';
 import 'package:blue/widgets/homescreen_widgets/story_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,14 @@ class StoryWidget extends StatelessWidget {
   final StoryModel storyImage;
   final Function onNextPressed;
   final Function onPrevPressed;
-  StoryWidget(this.storyImage, {this.onNextPressed, this.onPrevPressed});
+  final List<StoryModel> stories;
+  final int selectedIndex;
+
+  StoryWidget(this.storyImage,
+      {this.onNextPressed,
+      this.onPrevPressed,
+      this.stories,
+      this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +28,9 @@ class StoryWidget extends StatelessWidget {
               builder: (context) => AlertDialog(
                     insetPadding: EdgeInsets.zero,
                     contentPadding: EdgeInsets.zero,
-                    content: StoryDialog(
-                      storyImage,
-                      onNextTap: onNextPressed,
-                      onPreviousTap: onPrevPressed,
-                    ),
+                    content: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: StoryPage(selectedIndex, stories)),
                   ));
         },
         child: Container(

@@ -12,8 +12,27 @@ class DetailedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    launchWhatsapp() async {
+      var whatsappUrl = "https://wa.me/+91$phoneNumber?text=Hey!";
+      if (await canLaunch(whatsappUrl)) {
+        launch(whatsappUrl);
+      }
+    }
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      floatingActionButton: phoneNumber != null
+          ? GestureDetector(
+              onTap: () {
+                launchWhatsapp();
+              },
+              child: Image.asset(
+                'assets/images/whatsapp_ic.png',
+                height: 90,
+                width: 90,
+              ),
+            )
+          : null,
+      //  backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
@@ -33,54 +52,54 @@ class DetailedView extends StatelessWidget {
               ],
             ),
           )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  locationLink != null
-                      ? Expanded(
-                          child: Expanded(
-                              child: ActionButton(
-                            title: 'Location',
-                            onPressed: () async {
-                              String url = locationLink;
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                          )),
-                        )
-                      : Container(
-                          height: 0,
-                        ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  phoneNumber != null
-                      ? Expanded(
-                          child: ActionButton(
-                          title: 'Contact',
-                          onPressed: () async {
-                            String url = 'tel: $phoneNumber';
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
-                        ))
-                      : Container(
-                          height: 0,
-                        )
-                ],
-              ),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(16.0),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         locationLink != null
+          //             ? Expanded(
+          //                 child: Expanded(
+          //                     child: ActionButton(
+          //                   title: 'Location',
+          //                   onPressed: () async {
+          //                     String url = locationLink;
+          //                     if (await canLaunch(url)) {
+          //                       await launch(url);
+          //                     } else {
+          //                       throw 'Could not launch $url';
+          //                     }
+          //                   },
+          //                 )),
+          //               )
+          //             : Container(
+          //                 height: 0,
+          //               ),
+          //         SizedBox(
+          //           width: 10,
+          //         ),
+          //         phoneNumber != null
+          //             ? Expanded(
+          //                 child: ActionButton(
+          //                 title: 'Contact',
+          //                 onPressed: () async {
+          //                   String url = 'tel: $phoneNumber';
+          //                   if (await canLaunch(url)) {
+          //                     await launch(url);
+          //                   } else {
+          //                     throw 'Could not launch $url';
+          //                   }
+          //                 },
+          //               ))
+          //             : Container(
+          //                 height: 0,
+          //               )
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

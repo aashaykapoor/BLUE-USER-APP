@@ -41,10 +41,10 @@ class HomePage extends StatelessWidget {
         ],
         backgroundColor: Colors.white,
         title: Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20, bottom: 10),
           child: Image.asset(
             'assets/images/home_logo.png',
-            width: 230,
+            width: 150,
           ),
         ),
       ),
@@ -58,8 +58,8 @@ class HomePage extends StatelessWidget {
             } else {
               List randomStories = snapshot.data.stories;
               randomStories.shuffle();
-              Provider.of<StoryProvider>(context, listen: false).stories =
-                  randomStories;
+              // Provider.of<StoryProvider>(context, listen: false).stories =
+              //     randomStories;
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -69,18 +69,16 @@ class HomePage extends StatelessWidget {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: List.generate(
-                              randomStories.length,
-                              (index) => Consumer<StoryProvider>(
-                                    builder: (context, provider, child) {
-                                      return StoryWidget(
-                                        randomStories[index],
-                                        onNextPressed: () {},
-                                        onPrevPressed: () {},
-                                      );
-                                    },
-                                  )),
-                        ),
+                            children: List.generate(
+                                randomStories.length,
+                                (index) => StoryWidget(
+                                      randomStories[index],
+                                      onNextPressed: () {},
+                                      onPrevPressed: () {},
+                                      stories: randomStories,
+                                      selectedIndex: snapshot.data.stories
+                                          .indexOf(randomStories[index]),
+                                    ))),
                       ),
                       SizedBox(
                         height: 10,
