@@ -5,21 +5,6 @@ class StoryProvider extends ChangeNotifier {
   List<StoryModel> _stories;
   StoryModel _selectedStory;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   get selectedStory => _selectedStory;
   set selectedStory(StoryModel value) {
     this._selectedStory = value;

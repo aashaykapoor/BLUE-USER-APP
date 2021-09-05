@@ -16,13 +16,10 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
-  Timer _timerr;
   Timer storyTimer;
   @override
   void dispose() {
-    _timerr.cancel();
     storyTimer.cancel();
-
     super.dispose();
   }
 
@@ -30,15 +27,7 @@ class _StoryPageState extends State<StoryPage> {
   void initState() {
     _currentIndex.value = widget.selectedIndex;
     startStoryTimer();
-    _timerr = Timer.periodic(Duration(seconds: 15), (timer) {
-      print('aashay is working');
-      if (_currentIndex.value < widget.stories.length - 1) {
-        _currentIndex.value++;
-      } else {
-        Navigator.pop(context);
-      }
-      ;
-    }); // TODO: implement initState
+
     super.initState();
   }
 
@@ -54,60 +43,65 @@ class _StoryPageState extends State<StoryPage> {
       backgroundColor: Colors.black,
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: Expanded(
-          child: GestureDetector(
-            onVerticalDragStart: (s) {
-              
-              Navigator.pop(context);
-            },
-            onTapDown: (details) => _onTapDown(details),
-            child: PageView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (page) {
-                  _currentIndex.value = page;
-                },
-                itemCount: widget.stories.length,
-                itemBuilder: (context, i) => Stack(
-                      children: [
-                        ValueListenableBuilder<int>(
+        child: GestureDetector(
+          onVerticalDragStart: (s) {
+            Navigator.pop(context);
+          },
+          onTapDown: (details) => _onTapDown(details),
+          child: PageView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              onPageChanged: (page) {
+                _currentIndex.value = page;
+                stopStoryTimer();
+                startStoryTimer();
+              },
+              itemCount: widget.stories.length,
+              itemBuilder: (context, i) => Stack(
+                    children: [
+                      ValueListenableBuilder<int>(
                           valueListenable: _currentIndex,
-                          builder: (context, value, index) => Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: CachedNetworkImage(
-                                  imageUrl: widget
-                                      .stories[value ?? widget.selectedIndex]
-                                      .subImg),
-                            ),
-                          ),
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 50, left: 20),
-                        //   child: CircleAvatar(
-                        //     radius: 35,
-                        //     backgroundImage: CachedNetworkImageProvider(
-                        //         widget.stories[_currentIndex.value].mainImg),
-                        //   ),
-                        // ),
-                        ValueListenableBuilder<double>(
-                            valueListenable: progressNotifier,
-                            builder: (context, value, child) =>
-                                LinearProgressIndicator(
-                                  color: Colors.blue,
-                                  backgroundColor: Colors.transparent,
-                                  value: value.toDouble(),
-                                )),
-                        widget.stories[_currentIndex.value].knowMoreImg !=
-                                    null &&
-                                widget.stories[_currentIndex.value].knowMoreImg
-                                    .isNotEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.all(30),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
+                          builder: (context, value, index) {
+                            stopStoryTimer();
+                            startStoryTimer();
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Center(
+                                child: CachedNetworkImage(
+                                    imageUrl: widget
+                                        .stories[value ?? widget.selectedIndex]
+                                        .subImg),
+                              ),
+                            );
+                          }),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 50, left: 20),
+                      //   child: CircleAvatar(
+                      //     radius: 35,
+                      //     backgroundImage: CachedNetworkImageProvider(
+                      //         widget.stories[_currentIndex.value].mainImg),
+                      //   ),
+                      // ),
+                      ValueListenableBuilder<double>(
+                          valueListenable: progressNotifier,
+                          builder: (context, value, child) =>
+                              LinearProgressIndicator(
+                                color: Colors.blue,
+                                backgroundColor: Colors.transparent,
+                                value: value.toDouble(),
+                              )),
+                      widget.stories[_currentIndex.value].knowMoreImg != null &&
+                              widget.stories[_currentIndex.value].knowMoreImg
+                                  .isNotEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.all(30),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   DetailedView(
@@ -124,31 +118,31 @@ class _StoryPageState extends State<StoryPage> {
                                                             _currentIndex.value]
                                                         .phoneNumber,
                                                   )));
-                                    },
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30, vertical: 10),
-                                        child: Text(
-                                          'Know More',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700),
-                                        ),
+                                    });
+                                  },
+                                  child: Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30, vertical: 10),
+                                      child: Text(
+                                        'Know More',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700),
                                       ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blueGrey,
-                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.blueGrey,
                                     ),
                                   ),
                                 ),
-                              )
-                            : Container()
-                      ],
-                    )),
-          ),
+                              ),
+                            )
+                          : Container()
+                    ],
+                  )),
         ),
       ),
     );
@@ -157,16 +151,26 @@ class _StoryPageState extends State<StoryPage> {
   void startStoryTimer() {
     storyTimer = Timer.periodic(Duration(milliseconds: 1), (timer) {
       if (progressNotifier.value < 1) {
-        progressNotifier.value += (progressNotifier.value / 15) / 100;
+        progressNotifier.value += (progressNotifier.value * 4) / 1000;
+      } else if (_currentIndex.value < widget.stories.length - 1) {
+        _currentIndex.value++;
+        print(_currentIndex.value);
+      } else {
+        stopStoryTimer();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+        });
       }
     });
   }
 
   void stopStoryTimer() {
-    if (storyTimer.isActive) {
-      progressNotifier.value = 0.001;
-      storyTimer.cancel();
-      storyTimer = null;
+    if (storyTimer != null) {
+      if (storyTimer.isActive) {
+        progressNotifier.value = 0.001;
+        storyTimer.cancel();
+        storyTimer = null;
+      }
     }
   }
 
@@ -184,7 +188,7 @@ class _StoryPageState extends State<StoryPage> {
         _currentIndex.value += 1;
       } else {
         // Out of bounds - loop story
-        Navigator.of(context).pop();
+        //  Navigator.of(context).pop();
         // _currentIndex = 0;
       }
     }
